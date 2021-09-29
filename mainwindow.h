@@ -34,6 +34,7 @@ public:
     QList<muros*> laberinto;
     list<comida*> almuerzo;
     int direccion1;
+    int contador=0;
 
 public slots:
     void movimientoEnemigo();

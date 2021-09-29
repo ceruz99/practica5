@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -11,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     escena->setSceneRect(0,0,700,500);
     pac=new bola(285,195,20);
     escena->addItem(pac);
-
-
+    ui->label->setText("Puntos:");
+    ui->label_2->setText(QString::number(contador));
 
     //muros principales encierran
     laberinto.push_back(new muros(0,0,600,20));
@@ -373,6 +374,10 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
         if(pac->collidesWithItem(*itComida)){
             escena->removeItem(*itComida);
             almuerzo.erase(itComida);
+            contador+=1;
+            ui->label_2->setText(QString::number(contador));
+            if(contador==88)
+                QApplication::quit();
         }
     }
     if(pac->collidesWithItem(peligro1))
