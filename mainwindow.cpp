@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     escena->addItem(pac);
 
 
+
     //muros principales encierran
     laberinto.push_back(new muros(0,0,600,20));
     escena->addItem(laberinto.back());
@@ -257,11 +258,69 @@ MainWindow::MainWindow(QWidget *parent)
     almuerzo.push_back(new comida(560,360));
     escena->addItem(almuerzo.back());
 
+    peligro1=new enemigo(35,35,15);
+    escena->addItem(peligro1);
+
+    direccion1=1+rand()%(5-1);
+    QTimer *timer= new QTimer(this);
+    connect(timer, SIGNAL(timeout()),this,SLOT(movimientoEnemigo()));
+    timer->start(100);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::movimientoEnemigo(){
+    QList<muros*> :: Iterator it;
+    switch (direccion1) {
+    case 1:{
+        peligro1->moveRight();
+        for(it=laberinto.begin();it!=laberinto.end();it++)
+        {
+            if(peligro1->collidesWithItem(*it)){
+                peligro1->moveLeft();
+                direccion1=1+rand()%(5-1);
+            }
+        }
+        break;
+    }
+    case 2:{
+        peligro1->moveLeft();
+        for(it=laberinto.begin();it!=laberinto.end();it++)
+        {
+            if(peligro1->collidesWithItem(*it)){
+                peligro1->moveRight();
+                direccion1=1+rand()%(5-1);
+            }
+        }
+        break;
+    }
+    case 3:{
+        peligro1->moveUp();
+        for(it=laberinto.begin();it!=laberinto.end();it++)
+        {
+            if(peligro1->collidesWithItem(*it)){
+                peligro1->moveDown();
+                direccion1=1+rand()%(5-1);
+            }
+        }
+        break;
+    }
+    case 4:{
+        peligro1->moveDown();
+        for(it=laberinto.begin();it!=laberinto.end();it++)
+        {
+            if(peligro1->collidesWithItem(*it)){
+                peligro1->moveUp();
+                direccion1=1+rand()%(5-1);
+            }
+        }
+        break;
+    }
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
@@ -316,6 +375,8 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
             almuerzo.erase(itComida);
         }
     }
+    if(pac->collidesWithItem(peligro1))
+        QApplication::quit();
 
 }
 
