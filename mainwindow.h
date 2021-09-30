@@ -44,9 +44,10 @@ private:
     QGraphicsScene *escena;
     bola *pac;
     enemigo *peligro1;
+    fstream leer;
     void keyPressEvent(QKeyEvent *evento);
     void obtencionMuros();
-
+    void obtencionComida();
 
 
 };
